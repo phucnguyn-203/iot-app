@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "809861422355",
+    "firebase_url": "https://iot-grio9-52213-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iot-grio9-52213",
+    "storage_bucket": "iot-grio9-52213.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809861422355:android:57b4b217a0634bd2ff4ee6",
+        "android_client_info": {
+          "package_name": "com.ptithcm.iot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809861422355-4iup06f4357ne7feefkr4b24lr2uttvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbLV1w3nuWB9sGLnupYCwqP0R9KSiDYyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809861422355-4iup06f4357ne7feefkr4b24lr2uttvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
