@@ -24,52 +24,84 @@ class _ManualControlState extends State<ManualControl> {
       "Light 1",
       "Living Room",
       false,
+      "light"
     ],
     [
       const Icon(LineIcons.lightbulb, size: 35, color: Colors.white),
       "Light 2",
-      "Floor 1",
+      "Bedroom",
       false,
+      "light"
     ],
     [
       const Icon(LineIcons.lightbulb, size: 35, color: Colors.white),
       "Light 3",
-      "Toilet",
+      "Kitchen",
       false,
+      "light"
     ],
     [
       const Icon(LineIcons.lightbulb, size: 35, color: Colors.white),
       "Light 4",
-      "Kitchen",
+      "Toilet",
       false,
-    ]
+      "light"
+    ],
+    [
+      const Icon(LineIcons.doorClosed, size: 35, color: Colors.white),
+      "Door",
+      "Bedroom",
+      false,
+      "door"
+    ],
   ];
 
   @override
   void initState() {
     super.initState();
     for (int i = 0; i < smartDevices.length; i++) {
-      _dbRef.child('light${i + 1}/turn').onValue.listen((event) {
-        final bool newValue = event.snapshot.value == "1";
-        setState(() {
-          smartDevices[i][3] = newValue;
-          smartDevices[i][0] = newValue
-              ? const Icon(LineIcons.lightbulbAlt,
-                  size: 35, color: Colors.yellow)
-              : const Icon(LineIcons.lightbulb, size: 35, color: Colors.white);
+      if (smartDevices[i][4] == "light") {
+        _dbRef.child('light${i + 1}/turn').onValue.listen((event) {
+          setState(() {
+            smartDevices[i][3] = event.snapshot.value == "1";
+            smartDevices[i][0] = event.snapshot.value == "1"
+                ? const Icon(Icons.lightbulb, size: 35, color: Colors.yellow)
+                : const Icon(LineIcons.lightbulb,
+                    size: 35, color: Colors.white);
+          });
         });
-      });
+      } else if (smartDevices[i][4] == "door") {
+        _dbRef.child('door/turn').onValue.listen((event) {
+          setState(() {
+            smartDevices[i][3] = event.snapshot.value == "1";
+            smartDevices[i][0] = event.snapshot.value == "1"
+                ? const Icon(LineIcons.doorOpen, size: 35, color: Colors.white)
+                : const Icon(LineIcons.doorClosed,
+                    size: 35, color: Colors.white);
+          });
+        });
+      }
     }
   }
 
-  void powerChange(bool value, int index) {
-    _dbRef.child('light${index + 1}/turn').set(value ? "1" : "0");
-    setState(() {
-      smartDevices[index][3] = value;
-      smartDevices[index][0] = value
-          ? const Icon(LineIcons.lightbulbAlt, size: 35, color: Colors.yellow)
-          : const Icon(LineIcons.lightbulb, size: 35, color: Colors.white);
-    });
+  void powerChange(bool value, int index, String device) {
+    if (device == "light") {
+      _dbRef.child('light${index + 1}/turn').set(value ? "1" : "0");
+      setState(() {
+        smartDevices[index][3] = value;
+        smartDevices[index][0] = value
+            ? const Icon(LineIcons.lightbulbAlt, size: 35, color: Colors.yellow)
+            : const Icon(LineIcons.lightbulb, size: 35, color: Colors.white);
+      });
+    } else if (device == "door") {
+      _dbRef.child('door/turn').set(value ? "1" : "0");
+      setState(() {
+        smartDevices[index][3] = value;
+        smartDevices[index][0] = value
+            ? const Icon(LineIcons.doorOpen, size: 35, color: Colors.white)
+            : const Icon(LineIcons.doorClosed, size: 35, color: Colors.white);
+      });
+    }
   }
 
   @override
@@ -139,7 +171,7 @@ class _ManualControlState extends State<ManualControl> {
                         area: smartDevices[index][2],
                         power: smartDevices[index][3],
                         onChange: (value) {
-                          powerChange(value, index);
+                          powerChange(value, index, smartDevices[index][4]);
                         },
                       );
                     }),
